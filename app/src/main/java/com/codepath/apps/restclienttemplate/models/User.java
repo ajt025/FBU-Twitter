@@ -1,12 +1,11 @@
 package com.codepath.apps.restclienttemplate.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
-public class User implements Parcelable {
+@Parcel
+public class User {
 
     // list attributes
     public String name;
@@ -25,18 +24,5 @@ public class User implements Parcelable {
         user.profileImageUrl = json.getString("profile_image_url_https");
 
         return user;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeLong(uid);
-        dest.writeString(screenName);
-        dest.writeString(profileImageUrl);
     }
 }
