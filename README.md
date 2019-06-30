@@ -58,7 +58,6 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 * README has static/nonstatic issues in the tweet/user logic.
-* **BUG** - Currently crashes upon second tweet. An issue with how things are parceled.
 
 ## Open-source libraries used
 
