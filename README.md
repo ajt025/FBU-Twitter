@@ -20,8 +20,8 @@ The following **required** functionality is completed:
 
 The following **stretch** features are implemented:
 
-* [ ] User can **see a counter with total number of characters left for tweet** on compose tweet page
-* [ ] User can **pull down to refresh tweets timeline**
+* [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
+* [X] User can **pull down to refresh tweets timeline**
 * [ ] User is using **"Twitter branded" colors and styles**
 * [ ] User sees an **indeterminate progress indicator** when any background or network task is happening
 * [ ] User can **select "reply" from detail view to respond to a tweet**
@@ -58,7 +58,6 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 * README has static/nonstatic issues in the tweet/user logic.
-* **BUG** - Currently crashes upon second tweet. An issue with how things are parceled.
 
 ## Open-source libraries used
 
