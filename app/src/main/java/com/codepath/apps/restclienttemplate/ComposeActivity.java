@@ -30,6 +30,8 @@ public class ComposeActivity extends AppCompatActivity {
     EditText etTweet;
     TextView tvCharCount;
 
+    String screenName;
+
     private TwitterClient client;
     private TextWatcher etWatcher;
 
@@ -38,12 +40,21 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+        screenName = getIntent().getStringExtra("screen_name");
+
         client = TwitterApp.getRestClient(ComposeActivity.this);
         sendTweet = findViewById(R.id.btnPost);
         etTweet = findViewById(R.id.etTweet);
         tvCharCount = findViewById(R.id.tvCharCount);
 
-        tvCharCount.setText("0 / " + MAX_CHAR);
+        int initialMessageLength = 0;
+
+        // check if intent was triggered by "reply" function
+        if (screenName != null) {
+            etTweet.setText("@" + screenName + " ");
+            initialMessageLength = etTweet.getText().length();
+        }
+        tvCharCount.setText(initialMessageLength + " / " + MAX_CHAR);
 
         sendTweet.setOnClickListener(new View.OnClickListener() {
             @Override

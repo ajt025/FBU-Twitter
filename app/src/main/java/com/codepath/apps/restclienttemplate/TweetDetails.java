@@ -37,8 +37,9 @@ public class TweetDetails extends AppCompatActivity {
         // populate the views according to this data
         tvUsername.setText(tweet.user.name);
         tvBody.setText(tweet.body);
+        tvHandle.setText("@" + tweet.user.screenName);
         // tvTime.setText(ParseRelativeData.getRelativeTimeAgo(tweet.createdAt));
-        // TODO set time and handle, also figure out how to put non-truncated text in
+        // TODO set time, also figure out how to put non-truncated text in
 
         Glide.with(this)
                 .load(tweet.user.profileImageUrl).into(ivProfileImage);

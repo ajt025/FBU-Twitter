@@ -93,6 +93,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     context.startActivity(i);
                 }
             });
+
+            ibReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Tweet tweet = mTweets.get(getAdapterPosition());
+
+                    Intent i = new Intent(v.getContext(), ComposeActivity.class);
+                    i.putExtra("screen_name", tweet.user.screenName);
+                    context.startActivity(i);
+                }
+            });
         }
     }
 
