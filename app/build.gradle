@@ -14,6 +14,8 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     // Related to https://github.com/scribejava/scribejava/issues/480
