@@ -13,7 +13,6 @@ import com.codepath.oauth.OAuthLoginActionBarActivity;
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 	SampleModelDao sampleModelDao;
-
 	AsyncTask<SampleModel, Void, Void> task = new AsyncTask<SampleModel, Void, Void>() {
 		@Override
 		protected Void doInBackground(SampleModel... sampleModels) {
@@ -35,7 +34,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		task.execute(sampleModel);
 	}
 
-
 	// Inflate the menu; this adds items to the action bar if it is present.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,7 +46,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	public void onLoginSuccess() {
 		// Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show();
-
 		Intent i = new Intent(this, TimelineActivity.class);
 		startActivity(i);
 	}
