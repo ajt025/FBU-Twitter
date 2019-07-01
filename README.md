@@ -58,6 +58,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 * README has static/nonstatic issues in the tweet/user logic.
+* Twitter drawables missing a "reply" image
+* Twitter drawable for "close" vector has some sort of error within its SVG
 
 ## Open-source libraries used
 
