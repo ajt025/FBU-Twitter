@@ -55,13 +55,30 @@ public class TweetDetails extends AppCompatActivity {
         // tvTime.setText(ParseRelativeData.getRelativeTimeAgo(tweet.createdAt));
         // TODO set time, also figure out how to put non-truncated text in
 
+        // determine background resource for favorite button
+        if (tweet.liked) {
+            ibLike.setImageResource(R.drawable.ic_vector_heart);
+            ibLike.setTag(R.drawable.ic_vector_heart);
+        } else {
+            ibLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+            ibLike.setTag(R.drawable.ic_vector_heart_stroke);
+        }
+
         Glide.with(this)
                 .load(tweet.user.profileImageUrl).into(ivProfileImage);
 
         ibLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO use tags to switch between like and unlike drawable
+                if ( (int) ibLike.getTag() == R.drawable.ic_vector_heart_stroke) {
+                    client.likeTweet(tweet.uid, new JsonHttpResponseHandler());
+                    ibLike.setImageResource(R.drawable.ic_vector_heart);
+                    ibLike.setTag(R.drawable.ic_vector_heart);
+                } else {
+                    client.unlikeTweet(tweet.uid, new JsonHttpResponseHandler());
+                    ibLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+                    ibLike.setTag(R.drawable.ic_vector_heart_stroke);
+                }
             }
         });
 

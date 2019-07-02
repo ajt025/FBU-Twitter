@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
@@ -21,6 +22,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     private List<Tweet> mTweets;
     Context context;
+    TwitterClient client;
 
     // pass in Tweets array into constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -32,6 +34,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
+
+        client = TwitterApp.getRestClient(context);
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         ViewHolder viewHolder = new ViewHolder(tweetView);
@@ -51,6 +55,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvTime.setText(ParseRelativeData.getRelativeTimeAgo(tweet.createdAt));
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+
+        // determine background resource for favorite button
+        if (tweet.liked) {
+            holder.ibLike.setImageResource(R.drawable.ic_vector_heart);
+            holder.ibLike.setTag(R.drawable.ic_vector_heart);
+        } else {
+            holder.ibLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+            holder.ibLike.setTag(R.drawable.ic_vector_heart_stroke);
+        }
     }
 
     @Override
@@ -86,10 +99,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(getAdapterPosition());
 
                     Intent i = new Intent(v.getContext(), TweetDetails.class);
-                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(mTweets.get(position)));
+                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                     context.startActivity(i);
                 }
             });
@@ -103,6 +116,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     i.putExtra("screen_name", tweet.user.screenName);
                     i.putExtra("tweet_id", tweet.uid);
                     context.startActivity(i);
+                }
+            });
+
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Tweet tweet = mTweets.get(getAdapterPosition());
+
+                    if ( (int) ibLike.getTag() == R.drawable.ic_vector_heart_stroke) {
+                        client.likeTweet(tweet.uid, new JsonHttpResponseHandler());
+                        ibLike.setImageResource(R.drawable.ic_vector_heart);
+                        ibLike.setTag(R.drawable.ic_vector_heart);
+                    } else {
+                        client.unlikeTweet(tweet.uid, new JsonHttpResponseHandler());
+                        ibLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+                        ibLike.setTag(R.drawable.ic_vector_heart_stroke);
+                    }
                 }
             });
         }
