@@ -79,8 +79,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
             ibReply = (ImageButton) itemView.findViewById(R.id.ibReply);
-            ibRetweet = (ImageButton) itemView.findViewById(R.id.ibRetweet);
-            ibLike = (ImageButton) itemView.findViewById(R.id.ibLike);
+            ibRetweet = (ImageButton) itemView.findViewById(R.id.ibRetweetDetail);
+            ibLike = (ImageButton) itemView.findViewById(R.id.ibLikeDetail);
             ibDirectMessage = (ImageButton) itemView.findViewById(R.id.ibDirectMessage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
