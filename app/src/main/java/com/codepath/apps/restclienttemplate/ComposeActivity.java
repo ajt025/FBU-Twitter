@@ -31,6 +31,7 @@ public class ComposeActivity extends AppCompatActivity {
     TextView tvCharCount;
 
     String screenName;
+    long tweetID;
 
     private TwitterClient client;
     private TextWatcher etWatcher;
@@ -41,6 +42,7 @@ public class ComposeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compose);
 
         screenName = getIntent().getStringExtra("screen_name");
+        tweetID = getIntent().getLongExtra("tweet_id", 0);
 
         client = TwitterApp.getRestClient(ComposeActivity.this);
         sendTweet = findViewById(R.id.btnPost);
@@ -63,27 +65,61 @@ public class ComposeActivity extends AppCompatActivity {
 
                 // check if tweet is of required length
                 if (message.length() <= MAX_CHAR) {
-                    client.sendTweet(message, new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            try {
-                                Tweet tweet = Tweet.fromJson(response);
-                                Intent data = new Intent();
-                                data.putExtra("tweet", Parcels.wrap(tweet));
-                                // bundle data for response
-                                setResult(RESULT_OK, data);
-                                // close the activity
-                                finish();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                    // check if compose or reply
+                    if (screenName == null && tweetID == 0) {
+                        client.sendTweet(message, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                try {
+                                    Tweet tweet = Tweet.fromJson(response);
+                                    Intent data = new Intent();
+                                    data.putExtra("tweet", Parcels.wrap(tweet));
+                                    // bundle data for response
+                                    setResult(RESULT_OK, data);
+                                    // close the activity
+                                    finish();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                super.onFailure(statusCode, headers, throwable, errorResponse);
+                            }
+                        });
+                    } else {
+                        // post REPLY, not compose
+
+                        if (message.contains("@" + screenName)) {
+                            // check if our message has "@screenname", required for successful reply
+                            client.replyTweet(message, tweetID, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    try {
+                                        Tweet tweet = Tweet.fromJson(response);
+                                        Intent data = new Intent();
+                                        data.putExtra("tweet", Parcels.wrap(tweet));
+                                        // bundle data for response
+                                        setResult(RESULT_OK, data);
+                                        // close the activity
+                                        finish();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                }
+                            });
+                        } else {
+                            Toast.makeText(v.getContext(), "Reply lacks @ for successful reply!", Toast.LENGTH_LONG).show();
                         }
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                        }
-                    });
+                    }
                 } else {
                     Toast.makeText(v.getContext(), "Tweet is too long!", Toast.LENGTH_LONG).show();
                 }
