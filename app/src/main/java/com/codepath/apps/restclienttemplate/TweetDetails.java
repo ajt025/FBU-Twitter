@@ -38,10 +38,11 @@ public class TweetDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
 
+        // setup member variables (not views)
         client = TwitterApp.getRestClient(TweetDetails.this);
         tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
-
+        // assign views
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvHandle = (TextView) findViewById(R.id.tvHandle);
         tvBody = (TextView) findViewById(R.id.tvBody);
@@ -56,7 +57,7 @@ public class TweetDetails extends AppCompatActivity {
         tvBody.setText(tweet.body);
         tvHandle.setText("@" + tweet.user.screenName);
         // tvTime.setText(ParseRelativeData.getRelativeTimeAgo(tweet.createdAt));
-        // TODO set time, also figure out how to put non-truncated text in
+        // TODO set time
 
         // determine background resource for favorite button
         if (tweet.liked) {

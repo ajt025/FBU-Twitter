@@ -8,7 +8,6 @@ import org.parceler.Parcel;
 public class Tweet {
     // list out attributes
     public String body;
-    public String bodyExt;
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
@@ -28,10 +27,6 @@ public class Tweet {
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.liked = jsonObject.getBoolean("favorited");
         tweet.likeCount = jsonObject.getInt("favorite_count");
-
-        if (jsonObject.has("extended_tweet")) {
-            tweet.bodyExt = jsonObject.getJSONObject("extended_tweet").getString("full_text");
-        }
 
         JSONObject entities  = jsonObject.getJSONObject("entities");
 
