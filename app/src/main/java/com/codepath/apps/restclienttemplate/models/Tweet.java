@@ -8,11 +8,13 @@ import org.parceler.Parcel;
 public class Tweet {
     // list out attributes
     public String body;
+    public String bodyExt;
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
     public boolean liked;
     public int likeCount;
+    public String mediaUrl;
 
     public Tweet() {}
 
@@ -26,6 +28,18 @@ public class Tweet {
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.liked = jsonObject.getBoolean("favorited");
         tweet.likeCount = jsonObject.getInt("favorite_count");
+
+        if (jsonObject.has("extended_tweet")) {
+            tweet.bodyExt = jsonObject.getJSONObject("extended_tweet").getString("full_text");
+        }
+
+        JSONObject entities  = jsonObject.getJSONObject("entities");
+
+        if (entities.has("media")) {
+            // grab the media_url_https from many nested arrays/objs
+            tweet.mediaUrl = entities.getJSONArray("media").getJSONObject(0)
+                    .getString("media_url_https");
+        }
 
         return tweet;
     }

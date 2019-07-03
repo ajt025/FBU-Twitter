@@ -31,6 +31,7 @@ public class TweetDetails extends AppCompatActivity {
     ImageView ivProfileImage;
     ImageButton ibLike;
     ImageButton ibRetweet;
+    ImageView ivMedia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class TweetDetails extends AppCompatActivity {
         client = TwitterApp.getRestClient(TweetDetails.this);
         tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
+
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvHandle = (TextView) findViewById(R.id.tvHandle);
         tvBody = (TextView) findViewById(R.id.tvBody);
@@ -47,6 +49,7 @@ public class TweetDetails extends AppCompatActivity {
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         ibLike = (ImageButton) findViewById(R.id.ibLikeDetail);
         ibRetweet = (ImageButton) findViewById(R.id.ibRetweetDetail);
+        ivMedia = (ImageView) findViewById(R.id.ivMedia);
 
         // populate the views according to this data
         tvUsername.setText(tweet.user.name);
@@ -64,8 +67,17 @@ public class TweetDetails extends AppCompatActivity {
             ibLike.setTag(R.drawable.ic_vector_heart_stroke);
         }
 
+        // set profile image
         Glide.with(this)
-                .load(tweet.user.profileImageUrl).into(ivProfileImage);
+                .load(tweet.user.profileImageUrl)
+                .into(ivProfileImage);
+
+        // set media if media exists
+        if (tweet.mediaUrl != null) {
+            Glide.with(this)
+                    .load(tweet.mediaUrl)
+                    .into(ivMedia);
+        }
 
         ibLike.setOnClickListener(new View.OnClickListener() {
             @Override
